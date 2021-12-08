@@ -5,7 +5,7 @@ from transform_receiver import get_camera_transform
 from transformation_handler import invert_homogeneous_matrix
 default_webcam = True
 if not default_webcam:
-    import pyrealsense2 as rs
+    import pyrealsense2.pyrealsense2 as rs
 
 
 if __name__ == '__main__':
@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
             cv.imshow('frame',color_image)
             transform = get_camera_transform(color_image)
-            
+
             k = cv.waitKey(1) & 0xFF
             if k == 27:
                 break
