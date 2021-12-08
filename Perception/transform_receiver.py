@@ -20,7 +20,7 @@ camera_matrix = np.array(camera_matrix)
 dist_coeffs = np.array(dist_coeffs)
 
 def get_camera_transform(frame, debug=True):
-    ''' Returns an np.ndarray of size (4, 4) as a homogeneous transformation matrix from camera frame to marker frame
+    ''' Returns an np.ndarray of size (4, 4) as a homogeneous transformation matrix from marker frame to camera frame
         Input: frame - the frame containing the ArUco Marker
     '''
     aruco_params = cv.aruco.DetectorParameters_create()
