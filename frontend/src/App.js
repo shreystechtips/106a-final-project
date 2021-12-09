@@ -31,16 +31,20 @@ function App() {
 				return { progress: 0 };
 			})
 			.then((data) => {
-				console.log(data);
-				setProg(data.progress);
+				if (prog != data.percent) {
+					setProg(data.percent);
+				}
 			});
-	}, 7000);
+	}, 10000);
 	function sendData(data, size) {
 		console.log(data, size);
 		fetch(POST_URL, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ points: data, size: size }),
+			body: JSON.stringify({
+				points: data.points.map((elem) => [elem.x, elem.y]),
+				size: size,
+			}),
 		})
 			.then((res) => {
 				if (!res.ok) {
