@@ -3,6 +3,10 @@ import CanvasDraw from "react-canvas-draw";
 
 import { Grid, Button } from "@mui/material";
 
+const API_URL = "http://localhost:3000";
+const POST_URL = `${API_URL}/api/post_points`;
+const PROG_URL = `${API_URL}/api/get_status`;
+
 function App() {
 	const size = useWindowSize();
 	const padding = 10;
@@ -16,6 +20,25 @@ function App() {
 		(Math.max(width, height) * 2) / 3,
 		Math.min(width, height)
 	);
+
+	function sendData(data, size) {
+		console.log(data, size);
+		fetch(POST_URL, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ points: data, size: size }),
+		})
+			.then((res) => {
+				if (!res.ok) {
+					throw new Error(res.statusText);
+				}
+				const val = res.json();
+				if (val.status == "P") {
+					alert("oops, in progress already");
+				}
+			})
+			.catch((err) => alert("Error in request!"));
+	}
 
 	var canvas = null;
 	return (
@@ -50,8 +73,20 @@ function App() {
 					<Grid item>
 						<Button
 							variant="contained"
+							disabled={
+								canvas === null
+									? false
+									: canvas.getSaveData()["lines"].length <= 0
+							}
 							onClick={() => {
-								console.log(canvas.getSaveData());
+								const data = JSON.parse(canvas.getSaveData());
+								if (data.lines.length > 1) {
+									alert("Please draw only one line, first line will be used");
+								} else if (data.lines.length === 0) {
+									alert("no lines drawn, aborting");
+									return;
+								}
+								sendData(data.lines[0], [data.width, data.height]);
 							}}
 							style={{
 								// padding: 50,
