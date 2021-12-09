@@ -1,3 +1,4 @@
+from Controls.controller import Controller
 import serial
 from time import sleep
 from point_tracker_controller import PointTracker
@@ -23,3 +24,12 @@ class ControllerManager:
 
     def pause_drawing(self):
         self.controller.set_idle()
+
+    def update_ball_location(self, ball_position):
+        self.controller.ball_position = ball_position
+
+    def is_done(self):
+        return self.controller.state == Controller.states['TRACKING'] or self.controller.state == Controller.states['BACKTRACKING']
+
+    def get_progress(self):
+        return self.controller.get_progress()

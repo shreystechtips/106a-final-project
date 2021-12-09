@@ -63,3 +63,7 @@ class Controller(ABC):
             if c == '\n':
                 return True
         return False
+    
+    @abstractmethod
+    def get_progress(self):
+        pass
