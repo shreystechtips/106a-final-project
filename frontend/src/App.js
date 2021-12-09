@@ -62,7 +62,7 @@ function App() {
 	return (
 		<Grid
 			container
-			spacing={10}
+			spacing={5}
 			direction="row"
 			justifyContent="space-evenly"
 			alignItems="flex-start"
@@ -87,7 +87,7 @@ function App() {
 				)}
 			</Grid>
 			<Grid item>
-				<Grid container direction="column" spacing={5}>
+				<Grid container direction="column" spacing={2}>
 					<Grid item>
 						<Button
 							variant="contained"
