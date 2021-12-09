@@ -18,6 +18,7 @@ def set_points():
     if not drawing and request.is_json():
         data = request.get_json()
         points = data['points']
+        size = data['dims'] ## [width, height]
         
         ## dispatch request to draw? asynchronously?
         # TODO:
