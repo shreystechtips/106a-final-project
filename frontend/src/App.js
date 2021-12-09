@@ -3,7 +3,7 @@ import CanvasDraw from "react-canvas-draw";
 
 import { Grid, Button, Typography } from "@mui/material";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "http://192.168.0.102:5000";
 const POST_URL = `${API_URL}/api/post_points`;
 const PROG_URL = `${API_URL}/api/get_status`;
 
@@ -62,7 +62,7 @@ function App() {
 	return (
 		<Grid
 			container
-			spacing={10}
+			spacing={5}
 			direction="row"
 			justifyContent="space-evenly"
 			alignItems="flex-start"
@@ -87,7 +87,7 @@ function App() {
 				)}
 			</Grid>
 			<Grid item>
-				<Grid container direction="column" spacing={5}>
+				<Grid container direction="column" spacing={2}>
 					<Grid item>
 						<Button
 							variant="contained"
@@ -99,7 +99,12 @@ function App() {
 							onClick={() => {
 								const data = JSON.parse(canvas.getSaveData());
 								if (data.lines.length > 1) {
-									alert("Please draw only one line, first line will be used");
+									let complete = window.confirm(
+										"Click ok to draw the first line, cancel to not do anything"
+									);
+									if (!complete) {
+										return;
+									}
 								} else if (data.lines.length === 0) {
 									alert("no lines drawn, aborting");
 									return;
@@ -130,6 +135,23 @@ function App() {
 							}}
 						>
 							Reset
+						</Button>
+					</Grid>
+					<Grid item>
+						<Button
+							variant="contained"
+							onClick={() => {
+								if (canvas != null) {
+									canvas.undo();
+								}
+							}}
+							style={{
+								// padding: 50,
+								borderRadius: 20,
+								fontSize: 40,
+							}}
+						>
+							Undo
 						</Button>
 					</Grid>
 					<Grid item>
