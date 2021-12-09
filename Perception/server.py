@@ -1,12 +1,11 @@
 from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 import cv2
-
+import numpy as np
 app = Flask(__name__)
 cors = CORS(app)
-
 drawing = False
-curr_frame = []
+curr_frame = np.zeros((480,640,3))
 
 @app.route(f'/api/post_points', methods = ["POST"])
 def set_points():
@@ -46,9 +45,6 @@ def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-client.connect(('localhost',8089))
-
 def publish_frame(frame):
     ret, buffer = cv2.imencode('.jpg', frame)
     frame = buffer.tobytes()
@@ -60,3 +56,6 @@ def gen_frames():
     frame = buffer.tobytes()
     return (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
+
+if __name__=="__main__":
+    app.run(host='0.0.0.0')
