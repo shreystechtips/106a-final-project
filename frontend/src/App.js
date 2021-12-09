@@ -22,21 +22,18 @@ function App() {
 		Math.min(width, height)
 	);
 
-	setTimeout(function () {
+	setInterval(function () {
 		fetch(PROG_URL)
 			.then((res) => {
-				console.log(res);
-				if (!res.ok) {
-					// throw new Error(res.statusText);
-					return { progress: 0 };
-				}
 				return res.json();
+			})
+			.catch((err) => {
+				return { progress: 0 };
 			})
 			.then((data) => {
 				console.log(data);
 				setProg(data.progress);
-			})
-			.catch(() => {});
+			});
 	}, 7000);
 	function sendData(data, size) {
 		console.log(data, size);
