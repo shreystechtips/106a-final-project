@@ -2,6 +2,7 @@ import cv2 as cv
 import yaml
 from yaml.error import YAMLError
 import numpy as np
+import transformation_handler
 
 aruco_dict = cv.aruco.Dictionary_get(cv.aruco.DICT_5X5_50)
 marker_id = 0
@@ -33,7 +34,10 @@ def get_camera_transform(frame, debug=True):
             new_frame = frame.copy()
             cv.aruco.drawDetectedMarkers(new_frame, corners, ids=ids)
             cv.aruco.drawAxis(new_frame, camera_matrix, dist_coeffs, rvecs[0], tvecs[0], 0.1)
-            cv.imshow("ArUco Marker", new_frame)
+            marker_to_camera = np.block([[rotation_matrix, translation_vector],
+                                         [np.zeros((1, 3)), 1]])
+            transformation_handler.draw_static_transform(new_frame, camera_matrix, dist_coeffs, marker_to_camera)
+            cv.imshow("ArUco Marker", new_frame)            
         return np.block([[rotation_matrix, translation_vector],
                         [np.zeros((1, 3)), 1]])
     return None
