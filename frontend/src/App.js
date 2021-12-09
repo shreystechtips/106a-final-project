@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Typography } from "@mui/material";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:5000";
 const POST_URL = `${API_URL}/api/post_points`;
 const PROG_URL = `${API_URL}/api/get_status`;
 
@@ -12,6 +12,7 @@ function App() {
 	const padding = 10;
 	const width = window.innerWidth - padding * 2;
 	const height = window.innerHeight - padding * 2;
+	const [prog, setProg] = useState(0);
 	// const staticSize = Math.min(
 	// 	(Math.max(window.innerWidth , window.innerHeight) * 2) / 3,
 	// 	Math.min(window.innerWidth, window.innerHeight)
@@ -21,6 +22,22 @@ function App() {
 		Math.min(width, height)
 	);
 
+	setTimeout(function () {
+		fetch(PROG_URL)
+			.then((res) => {
+				console.log(res);
+				if (!res.ok) {
+					// throw new Error(res.statusText);
+					return { progress: 0 };
+				}
+				return res.json();
+			})
+			.then((data) => {
+				console.log(data);
+				setProg(data.progress);
+			})
+			.catch(() => {});
+	}, 7000);
 	function sendData(data, size) {
 		console.log(data, size);
 		fetch(POST_URL, {
@@ -113,6 +130,17 @@ function App() {
 						>
 							Reset
 						</Button>
+					</Grid>
+					<Grid item>
+						<Typography
+							style={{
+								// padding: 50,
+								borderRadius: 20,
+								fontSize: 40,
+							}}
+						>
+							Prog: {prog}%
+						</Typography>
 					</Grid>
 				</Grid>
 			</Grid>
