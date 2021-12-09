@@ -2,3 +2,5 @@ opencv-contrib-python
 numpy
 pyyaml
 pyserial
+flask
+flask_cors
