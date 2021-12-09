@@ -11,8 +11,8 @@ def invert_homogeneous_matrix(matrix: np.ndarray):
     return np.block([[R_t, np.dot(R_t, -1 * T)],
                      [np.zeros((1,3)), 1]])
 
-workspace_to_marker_transformation = np.array([[0, -1, 0, 0.32],
-                                               [1, 0, 0, -0.45],
+workspace_to_marker_transformation = np.array([[0, -1, 0, 0.36195],
+                                               [1, 0, 0, -0.46355],
                                                [0, 0, 1, -0.03],
                                                [0, 0, 0, 1]])
 
