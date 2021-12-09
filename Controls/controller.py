@@ -57,3 +57,9 @@ class Controller(ABC):
 
     def send_command(self, command_string):
         self.ser.write(command_string.encode() + str.encode('\n'))
+
+    def check_acknowledgement(self) -> bool:
+        for c in self.ser.read():
+            if c == '\n':
+                return True
+        return False
