@@ -2,7 +2,7 @@ import numpy as np
 import serial
 
 ser = serial.Serial('/dev/ttyUSB0')
-ser.baudrate = 19200
+ser.baudrate = 115200
 
 def send_to_coords(coords: np.array):
     ''' Moves magnet mechanism to specify coordinates in "coords"
