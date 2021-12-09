@@ -31,7 +31,7 @@ def set_points():
         points = data['points']
         size = data['size'] ## [width, height]
         print(size, points) 
-        newPoints = [transform(pt) for pt in points]
+        newPoints = [transform(pt, size[0]) for pt in points]
         print(newPoints)
         
         ## dispatch request to draw? asynchronously?
