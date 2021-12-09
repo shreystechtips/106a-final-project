@@ -2,15 +2,22 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 import cv2
 import numpy as np
+from numpy.core.numeric import convolve
 app = Flask(__name__)
 cors = CORS(app)
 drawing = False
 import os
 import socket
 from PIL import Image, ImageFile
+import time
+import threading
+
+from ..controls.controller_manager import ControllerManager
+
 curr_frame = np.zeros((480,640,3))
 
 SCALE_SIZE = 400
+control = ControllerManager()
 
 def transform(point, old_dim, new_dim = SCALE_SIZE):
     old_dim = np.array(old_dim)
@@ -18,6 +25,15 @@ def transform(point, old_dim, new_dim = SCALE_SIZE):
     point = np.array(point)
     
     return point + old_dim/2 - new_dim/2
+
+
+def draw_async(points, control = control):
+    global drawing
+    control.draw_points(points)
+    while not control.done():
+        control.update_manager()
+        time.sleep(0.1)
+    drawing = False
 
 @app.route(f'/api/post_points', methods = ["POST"])
 def set_points():
@@ -33,27 +49,21 @@ def set_points():
         print(size, points) 
         newPoints = [transform(pt, size[0]) for pt in points]
         print(newPoints)
+        thread = threading.Thread(target=draw_async, args=(newPoints,))
+        thread.start()
         
-        ## dispatch request to draw? asynchronously?
-        # TODO:
-        ## if we things are async we return a started status
-        drawing = False
-        return {
-                "status": "F" #finished
-                }, 200
-        ## if things are not async we retugn a done status
         return {
                 "status": "S" #started
                 }, 200
     return {
-                "status": "P" #allready started
+                "status": "P" #already started
                 }, 200
 
 @app.route(f'/api/get_status', methods = ["GET"])
 def get_status():
     ## Get percent done of drawing process
     proportion_done = 0 ## TODO: Add code here to calculate percent done as a proportion
-    
+    proportion_done = control.get_progress()
     return {"percent": proportion_done*100}, 200
 
 @app.route('/api/video_feed')
