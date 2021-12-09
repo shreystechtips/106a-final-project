@@ -7,8 +7,11 @@ default_webcam = True
 if not default_webcam:
     import pyrealsense2.pyrealsense2 as rs
 
+from server import app
 
 if __name__ == '__main__':
+    ## start app, should be async
+    app.run(host='0.0.0.0')
     if default_webcam:
         # cap = cv.VideoCapture('/Users/karthikdharmarajan/Documents/EECS106A/106a-final-project/TestData/video-1638937380.mp4')
         cap = cv.VideoCapture(0)
