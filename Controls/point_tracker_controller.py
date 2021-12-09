@@ -56,3 +56,5 @@ class PointTracker(Controller):
         '''
         self.send_command(f'G01 X{coords[0]} Y{coords[1]}')
 
+    def get_progress(self):
+        return self.curr_index / len(self.points)

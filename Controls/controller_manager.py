@@ -30,3 +30,6 @@ class ControllerManager:
 
     def is_done(self):
         return self.controller.state == Controller.states['TRACKING'] or self.controller.state == Controller.states['BACKTRACKING']
+
+    def get_progress(self):
+        return self.controller.get_progress()
