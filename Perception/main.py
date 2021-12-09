@@ -36,6 +36,7 @@ if __name__ == '__main__':
             if ret:
                 cv.imshow('frame',frame)
                 curr_frame = frame
+                cv.imwrite("frame.jpg", frame)
                 transform = get_camera_transform(frame)
             k = cv.waitKey(1) & 0xFF
             if k == 27:
