@@ -54,7 +54,7 @@ def publish_frame(frame):
 
 def gen_frames():
     global curr_frame
-    if os.exists('frame.jpg'):
+    if os.path.exists('frame.jpg'):
         curr_frame = cv2.imread('frame.jpg')
     ret, buffer = cv2.imencode('.jpg', curr_frame)
     frame = buffer.tobytes()
