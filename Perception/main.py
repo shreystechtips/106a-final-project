@@ -7,7 +7,7 @@ default_webcam = True
 if not default_webcam:
     import pyrealsense2.pyrealsense2 as rs
 
-from server import app
+from server import app, curr_frame
 
 if __name__ == '__main__':
     ## start app, should be async
@@ -47,6 +47,7 @@ if __name__ == '__main__':
             color_image = np.asanyarray(color_frame.get_data())
 
             cv.imshow('frame',color_image)
+            curr_frame = color_image
             transform = get_camera_transform(color_image)
 
             k = cv.waitKey(1) & 0xFF
