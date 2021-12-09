@@ -30,7 +30,7 @@ def transform(point, old_dim, new_dim = SCALE_SIZE):
 def draw_async(points, control = control):
     global drawing
     control.draw_points(points)
-    while not control.done():
+    while not control.is_done():
         control.update_manager()
         time.sleep(0.1)
     drawing = False
