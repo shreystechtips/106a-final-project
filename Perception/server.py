@@ -5,6 +5,7 @@ import numpy as np
 app = Flask(__name__)
 cors = CORS(app)
 drawing = False
+import os
 curr_frame = np.zeros((480,640,3))
 
 @app.route(f'/api/post_points', methods = ["POST"])
@@ -52,6 +53,8 @@ def publish_frame(frame):
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
 
 def gen_frames():
+    if os.exists('frame.jpg'):
+        curr_frame = cv2.imread('frame.jpg')
     ret, buffer = cv2.imencode('.jpg', curr_frame)
     frame = buffer.tobytes()
     return (b'--frame\r\n'
