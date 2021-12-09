@@ -53,6 +53,11 @@ function App() {
 							onClick={() => {
 								console.log(canvas.getSaveData());
 							}}
+							style={{
+								// padding: 50,
+								borderRadius: 20,
+								fontSize: 40,
+							}}
 						>
 							Draw!
 						</Button>
@@ -64,6 +69,11 @@ function App() {
 								if (canvas != null) {
 									canvas.eraseAll();
 								}
+							}}
+							style={{
+								// padding: 50,
+								borderRadius: 20,
+								fontSize: 40,
 							}}
 						>
 							Reset
