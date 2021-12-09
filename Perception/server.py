@@ -10,6 +10,15 @@ import socket
 from PIL import Image, ImageFile
 curr_frame = np.zeros((480,640,3))
 
+SCALE_SIZE = 400
+
+def transform(point, old_dim, new_dim = SCALE_SIZE):
+    old_dim = np.array(old_dim)
+    new_dim = np.array(new_dim)
+    point = np.array(point)
+    
+    return point + old_dim/2 - new_dim/2
+
 @app.route(f'/api/post_points', methods = ["POST"])
 def set_points():
     '''
@@ -22,6 +31,9 @@ def set_points():
         points = data['points']
         size = data['size'] ## [width, height]
         print(size, points) 
+        newPoints = [transform(pt) for pt in points]
+        print(newPoints)
+        
         ## dispatch request to draw? asynchronously?
         # TODO:
         ## if we things are async we return a started status
