@@ -37,19 +37,15 @@ def get_ball_location(frame):
     
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     minRadius = 26
-    counter = 100
+    counter = 20
     while counter > 0:
-        circles = cv.HoughCircles(frame_gray, cv.HOUGH_GRADIENT, 1, 20, param1=200, param2=70, minRadius=minRadius, maxRadius=70)
+        circles = cv.HoughCircles(frame_gray, cv.HOUGH_GRADIENT, 1, 20, param1=100, param2=100, minRadius=minRadius, maxRadius=100)
         print("done applying circles")
         if circles is not None and len(circles[0]) == 1:
             print("circles are")
             print(circles)
             for x, y, r in circles[0]:
-                c = plt.Circle((x, y), r, fill=False, lw=3, ec='C1')
-                plt.gca().add_patch(c)
-            plt.imshow(frame)
-            plt.gcf().set_size_inches((12, 8))
-            plt.show()
+                cv.circle(frame_gray, (x, y), r, (0, 255, 0), thickness=2)
             break
         else:
             print(circles)
@@ -59,6 +55,7 @@ def get_ball_location(frame):
             else:
                 minRadius += 1
         counter -= 1
+        cv.imshow('frame_gray', frame_gray)
 
 if __name__ == '__main__':
     pipeline = rs.pipeline()
