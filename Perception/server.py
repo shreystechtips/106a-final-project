@@ -73,21 +73,22 @@ def set_preset():
     if not drawing and request.is_json:
         data = request.get_json()
         name = data['preset']
+        offset = data.get("offset", 0)
         if name == 'swirl':
             rt = data.get('rt', 15/180*np.pi)
             rr = data.get('rr', 3)
-            draw_points(*presets.swirl_preset(rt, rr))
+            draw_points(*presets.swirl_preset(rt, rr, offset=offset))
         elif name == 'demo':
             rt = data.get('rt', 15/180*np.pi)
             rr = data.get('rr', 3)
-            pts, size = presets.swirl_preset(rt, rr)
+            pts, size = presets.swirl_preset(rt, rr, offset=offset)
             pts.extend(pts[::-1])
             draw_points(pts, size)
         elif name == "cardiod":
-            pts, size = presets.cardiod_preset()
+            pts, size = presets.cardiod_preset(offset=offset)
             draw_points(pts, size)
         elif name == "lisajous":
-            pts, size = presets.lisajous_preset()
+            pts, size = presets.lisajous_preset(offset=offset)
             draw_points(pts, size)
             
     
