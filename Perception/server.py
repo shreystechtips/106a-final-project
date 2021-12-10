@@ -74,7 +74,15 @@ def set_preset():
         data = request.get_json()
         name = data['preset']
         if name == 'swirl':
-            draw_points(*presets.swirl_preset())
+            rt = data.get('rt', 15/180*np.pi)
+            rr = data.get('rr', 3)
+            draw_points(*presets.swirl_preset(rt, rr))
+        elif name == 'demo':
+            rt = data.get('rt', 15/180*np.pi)
+            rr = data.get('rr', 3)
+            pts, size = presets.swirl_preset(rt, rr)
+            draw_points(pts, size)
+            draw_points(pts[::-1], size)
     
         
         return {
