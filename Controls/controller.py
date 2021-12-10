@@ -60,7 +60,8 @@ class Controller(ABC):
 
     def check_acknowledgement(self) -> bool:
         for c in self.ser.read():
-            if c == '\n':
+            print(chr(c))
+            if chr(c) == '\n':
                 return True
         return False
     
