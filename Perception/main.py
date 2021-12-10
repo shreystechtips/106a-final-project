@@ -11,10 +11,11 @@ if not default_webcam:
 if __name__ == '__main__':
     if default_webcam:
         # cap = cv.VideoCapture('/Users/karthikdharmarajan/Documents/EECS106A/106a-final-project/TestData/video-1638937380.mp4')
-        cap = cv.VideoCapture(0)
+        cap = cv.VideoCapture('/Users/ryankoh/Desktop/106a-final-project/TestData/video-1638937380.mp4')
         while(1):
             ret, frame = cap.read()
-            # get_ball_location(frame)
+            frame = cv.imread('/Users/ryankoh/Desktop/106a-final-project/TestData/steel_ball_test_imgs/PXL_20211208_184549478.jpg', 0)
+            get_ball_location(frame)
             cv.imshow('frame',frame)
             transform = get_camera_transform(frame)
             k = cv.waitKey(1) & 0xFF
