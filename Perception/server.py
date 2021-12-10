@@ -83,6 +83,13 @@ def set_preset():
             pts, size = presets.swirl_preset(rt, rr)
             pts.extend(pts[::-1])
             draw_points(pts, size)
+        elif name == "cardiod":
+            pts, size = presets.cardiod_preset()
+            draw_points(pts, size)
+        elif name == "lisajous":
+            pts, size = presets.lisajous_preset()
+            draw_points(pts, size)
+            
     
         
         return {
