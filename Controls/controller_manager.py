@@ -13,7 +13,9 @@ class ControllerManager:
         self.ser.flushInput()
         print('Starting Serial Connection!')
         self.controller = PointTracker(self.ser)
-        self.controller.send_command("\n")
+        self.controller.send_command("\n\n")
+        it = self.ser.readline()
+        
 #        self.controller = PointTracker(self.ser)
         input("hit enter once 12v in")
         print('Attempting to home')
