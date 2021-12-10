@@ -5,7 +5,10 @@ import { Grid, Button, Typography } from "@mui/material";
 
 const API_URL = "http://192.168.0.102:5000";
 const POST_URL = `${API_URL}/api/post_points`;
+const PRESET_URL = `${API_URL}/api/draw_preset`;
 const PROG_URL = `${API_URL}/api/get_status`;
+
+const drawTypes = ["swirl"];
 
 function App() {
 	const size = useWindowSize();
@@ -36,6 +39,28 @@ function App() {
 				}
 			});
 	}
+
+	function draw(type) {
+		console.log(type);
+		fetch(PRESET_URL, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				preset: type,
+			}),
+		})
+			.then((res) => {
+				if (!res.ok) {
+					throw new Error(res.statusText);
+				}
+				const val = res.json();
+				if (val.status == "P") {
+					alert("oops, in progress already");
+				}
+			})
+			.catch((err) => alert("Error in request!"));
+	}
+
 	function sendData(data, size) {
 		console.log(data, size);
 		fetch(POST_URL, {
@@ -166,6 +191,21 @@ function App() {
 						>
 							Update Status
 						</Button>
+					</Grid>
+					<Grid item>
+						<Grid container direction="row" spacing={2}>
+							{drawTypes.map((elem) => (
+								<Grid item>
+									<Button
+										variant="contained"
+										onClick={() => draw(elem)}
+										id={elem}
+									>
+										{elem}
+									</Button>
+								</Grid>
+							))}
+						</Grid>
 					</Grid>
 					<Grid item>
 						<Typography
