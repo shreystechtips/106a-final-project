@@ -81,8 +81,8 @@ def set_preset():
             rt = data.get('rt', 15/180*np.pi)
             rr = data.get('rr', 3)
             pts, size = presets.swirl_preset(rt, rr)
-            draw_points(pts, size)
-            draw_points(pts[::-1], size)
+            pts.extend(pts[::-1])
+            draw_points(pts.ex, size)
     
         
         return {
