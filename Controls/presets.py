@@ -11,8 +11,11 @@ def swirl_preset(rate_theta = 15/180*np.pi, rate_r = 3, steps = 50, offset = 0):
 def cardiod_preset(a = 20, steps = 50, offset = 0):
     cos = np.cos(np.linspace(0, 2*np.pi, num=steps))
     sin = np.sin(np.linspace(0, 2*np.pi, num=steps))
-    x = (a*cos*(1-cos) + offset).astype(int)
-    y = (a*sin*(1-cos) + offset).astype(int)
+    x = (a*cos*(1-cos)) 
+    y = (a*sin*(1-cos))
+    off = min(np.min(x), np.min(y))
+    x -= off
+    y -= off
     size = max(np.max(x), np.max(y)) - min(np.min(x), np.min(y))
     import matplotlib.pyplot as plt
     plt.plot(x,y)
@@ -20,11 +23,12 @@ def cardiod_preset(a = 20, steps = 50, offset = 0):
     return list(zip(x,y)), (size,size)
 
 def lisajous_preset(offset = 0, steps = 200):
-    x = 4*np.sin( 3/4 *np.linspace(0, 8*np.pi, num=steps)) + offset
-    y = 3*np.sin(np.linspace(0, 8*np.pi, num=steps)) + offset
-    x = x
-    y = y
-    size = max(np.max(x), np.max(y)) - min(np.min(x), np.min(y))
+    x = 4*np.sin( 3/4 *np.linspace(0, 8*np.pi, num=steps)) 
+    y = 3*np.sin(np.linspace(0, 8*np.pi, num=steps)) 
+    off = min(np.min(x), np.min(y))
+    x = x - off
+    y = y - off
+    size = max(np.max(x), np.max(y)) 
     import matplotlib.pyplot as plt
     plt.plot(x,y)
     plt.show()

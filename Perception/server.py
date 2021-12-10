@@ -17,9 +17,9 @@ import Controls.presets as presets
 
 curr_frame = np.zeros((480,640,3))
 
-SCALE_SIZE = 300
+SCALE_SIZE = 200
 control = ControllerManager()
-
+#control = None
 def interpolate_points(points, DIST_THRES = 5):
     curr_dist = 0
     new_points = []
@@ -89,6 +89,7 @@ def set_preset():
             draw_points(pts, size)
         elif name == "lisajous":
             pts, size = presets.lisajous_preset(offset=offset)
+            print(pts)
             draw_points(pts, size)
             
     
