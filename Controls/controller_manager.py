@@ -28,7 +28,8 @@ class ControllerManager:
             sleep(0.1)
             #person = input("ree")
             it = self.ser.readline()
-            print(it)
+            if str(it).strip() != "":
+                print(it)
             if iter % 30 == 0:
                 person = input("enter")
             iter +=1 
