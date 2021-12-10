@@ -35,11 +35,11 @@ def get_ball_location(frame):
     # # thresholded = cv.inRange(hsv_frame, np.array([0, 0, 0]), np.array([90, 20, 360]))
     # cv.imshow("Threshold", thresholded)
     
-    # frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     minRadius = 26
     counter = 100
     while counter > 0:
-        circles = cv.HoughCircles(frame, cv.HOUGH_GRADIENT, 1, 20, param1=200, param2=70, minRadius=minRadius, maxRadius=70)
+        circles = cv.HoughCircles(frame_gray, cv.HOUGH_GRADIENT, 1, 20, param1=200, param2=70, minRadius=minRadius, maxRadius=70)
         print("done applying circles")
         if circles is not None and len(circles[0]) == 1:
             print("circles are")
