@@ -1,4 +1,4 @@
-from controller import Controller
+from Controls.controller import Controller
 import numpy as np
 
 class PointTracker(Controller):
@@ -30,9 +30,9 @@ class PointTracker(Controller):
             return
         if np.linalg.norm(self.ball_position - np.array(self.points[self.completed_index+1])) <= PointTracker.epsilon:
             self.completed_index += 1
-        if self.curr_index - self.completed_index > PointTracker.max_indices_behind:
-            self.set_backtracking()
-            return
+#        if self.curr_index - self.completed_index > PointTracker.max_indices_behind:
+#           self.set_backtracking()
+#            return
         if self.index_finished:
             self.curr_index += 1
             self.index_finished = False
@@ -54,7 +54,7 @@ class PointTracker(Controller):
         ''' Moves magnet mechanism to specify coordinates in "coords"
             Input coords in a np.array of size (2,) representing x, y in millimeters in workspace frame 
         '''
-        self.send_command(f'G01 X{coords[0]} Y{coords[1]}')
+        self.send_command(f'G01 X{coords[0]} Y{coords[1]} F5000')
 
     def get_progress(self):
         return self.curr_index / len(self.points)
