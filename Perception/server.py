@@ -11,12 +11,12 @@ import socket
 from PIL import Image, ImageFile
 import time
 import threading
-
-from ..controls.controller_manager import ControllerManager
+import sys
+from Controls.controller_manager import ControllerManager
 
 curr_frame = np.zeros((480,640,3))
 
-SCALE_SIZE = 400
+SCALE_SIZE = 300
 control = ControllerManager()
 
 def interpolate_points(points, DIST_THRES = 5):
@@ -34,20 +34,25 @@ def interpolate_points(points, DIST_THRES = 5):
             
 
 def transform(point, old_dim, new_dim = SCALE_SIZE):
+    scale = new_dim/old_dim
     old_dim = np.array(old_dim)
     new_dim = np.array(new_dim)
-    point = np.array(point)
-    
-    return point + old_dim/2 - new_dim/2
+    point = np.array(point) 
+    temp =  scale*(point - old_dim/2) + new_dim/2
+    temp[0] = -temp[0] + new_dim
+    return temp
 
 
 def draw_async(points, control = control):
     global drawing
+    print("start draw")
     control.draw_points(points)
+    print(control.is_done())
     while not control.is_done():
         control.update_manager()
         time.sleep(0.1)
     drawing = False
+    print("end draw")
 
 @app.route(f'/api/post_points', methods = ["POST"])
 def set_points():
@@ -60,7 +65,6 @@ def set_points():
         data = request.get_json()
         points = data['points']
         size = data['size'] ## [width, height]
-        print(size, points) 
         newPoints = interpolate_points([transform(pt, size[0]) for pt in points])
         print(newPoints)
         thread = threading.Thread(target=draw_async, args=(newPoints,))
@@ -77,7 +81,11 @@ def set_points():
 def get_status():
     ## Get percent done of drawing process
     proportion_done = 0 ## TODO: Add code here to calculate percent done as a proportion
-    proportion_done = control.get_progress()
+    try:
+        proportion_done = control.get_progress()
+    except Exception as e:
+        print(e)
+        pass
     return {"percent": proportion_done*100}, 200
 
 @app.route('/api/video_feed')
