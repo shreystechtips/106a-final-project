@@ -20,8 +20,8 @@ if __name__ == '__main__':
     # manager.add_command('runserver', CustomServer())
     # manager.run()
     if default_webcam:
-        cap = cv.VideoCapture('/home/shrey/106a-final-project/TestData/video-1638937380.mp4')
-        # cap = cv.VideoCapture(0)
+        # cap = cv.VideoCapture('/home/shrey/106a-final-project/TestData/video-1638937380.mp4')
+        cap = cv.VideoCapture(0)
         while(1):
             ret, frame = cap.read()
             # get_ball_location(frame)

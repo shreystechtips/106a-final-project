@@ -30,6 +30,6 @@ def convert_camera_vector_to_workspace(vector: np.array, camera_to_marker_transf
 def draw_static_transform(frame, camera_intrinsic_matrix, dist_coeffs, marker_to_camera_transform):    
     workspace_to_camera_transformation = np.matmul(marker_to_camera_transform, workspace_to_marker_transformation)
     rvec, _ = cv.Rodrigues(workspace_to_camera_transformation[0:3, 0:3])
-    print(rvec)
+    print(rvec.T)
     print(workspace_to_camera_transformation[0:3, 3:])
     cv.aruco.drawAxis(frame, camera_intrinsic_matrix, dist_coeffs, rvec, workspace_to_camera_transformation[0:3, 3:], 0.1)
