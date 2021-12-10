@@ -13,6 +13,7 @@ import time
 import threading
 import sys
 from Controls.controller_manager import ControllerManager
+import Controls.presets as presets
 
 curr_frame = np.zeros((480,640,3))
 
@@ -54,6 +55,35 @@ def draw_async(points, control = control):
     drawing = False
     print("end draw")
 
+def draw_points(points, size):
+    global drawing
+    if not drawing:
+        drawing = True
+        newPoints = interpolate_points([transform(pt, size[0]) for pt in points])
+        print(newPoints)
+        thread = threading.Thread(target=draw_async, args=(newPoints,))
+        thread.start()
+
+@app.route(f'/api/draw_preset', methods=['POST'])
+def set_preset():
+    '''
+    Start drawing process with set of points
+    '''
+    global drawing
+    if not drawing and request.is_json:
+        data = request.get_json()
+        name = data['preset']
+        if name == 'swirl':
+            draw_points(*presets.swirl_preset())
+    
+        
+        return {
+                "status": "S" #started
+                }, 200
+    return {
+                "status": "P" #already started
+                }, 200
+
 @app.route(f'/api/post_points', methods = ["POST"])
 def set_points():
     '''
@@ -61,14 +91,10 @@ def set_points():
     '''
     global drawing
     if not drawing and request.is_json:
-        drawing = True
         data = request.get_json()
         points = data['points']
         size = data['size'] ## [width, height]
-        newPoints = interpolate_points([transform(pt, size[0]) for pt in points])
-        print(newPoints)
-        thread = threading.Thread(target=draw_async, args=(newPoints,))
-        thread.start()
+        draw_points(points, size)
         
         return {
                 "status": "S" #started
