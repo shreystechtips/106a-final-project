@@ -22,7 +22,7 @@ function App() {
 		Math.min(width, height)
 	);
 
-	setInterval(function () {
+	function getStat() {
 		fetch(PROG_URL)
 			.then((res) => {
 				return res.json();
@@ -35,7 +35,7 @@ function App() {
 					setProg(data.percent);
 				}
 			});
-	}, 10000);
+	}
 	function sendData(data, size) {
 		console.log(data, size);
 		fetch(POST_URL, {
@@ -152,6 +152,19 @@ function App() {
 							}}
 						>
 							Undo
+						</Button>
+					</Grid>
+					<Grid item>
+						<Button
+							variant="contained"
+							onClick={getStat}
+							style={{
+								// padding: 50,
+								borderRadius: 20,
+								fontSize: 40,
+							}}
+						>
+							Update Status
 						</Button>
 					</Grid>
 					<Grid item>
