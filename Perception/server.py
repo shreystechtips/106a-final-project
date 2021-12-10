@@ -17,7 +17,7 @@ import Controls.presets as presets
 
 curr_frame = np.zeros((480,640,3))
 
-SCALE_SIZE = 200
+SCALE_SIZE = 300
 control = ControllerManager()
 #control = None
 def interpolate_points(points, DIST_THRES = 5):
