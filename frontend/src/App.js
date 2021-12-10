@@ -8,7 +8,7 @@ const POST_URL = `${API_URL}/api/post_points`;
 const PRESET_URL = `${API_URL}/api/draw_preset`;
 const PROG_URL = `${API_URL}/api/get_status`;
 
-const drawTypes = ["swirl"];
+const drawTypes = ["swirl", "demo"];
 
 function App() {
 	const size = useWindowSize();
@@ -47,6 +47,7 @@ function App() {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				preset: type,
+				rr: 2,
 			}),
 		})
 			.then((res) => {
