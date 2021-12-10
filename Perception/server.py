@@ -19,6 +19,20 @@ curr_frame = np.zeros((480,640,3))
 SCALE_SIZE = 400
 control = ControllerManager()
 
+def interpolate_points(points, DIST_THRES = 5):
+    curr_dist = 0
+    new_points = []
+    for i in range(0,len(points)):
+        if i ==0:
+            new_points.append(points[i])
+        else:
+            curr_dist += np.linalg.norm(points[i] - points[i-1])
+            if curr_dist > DIST_THRES:
+                curr_dist = 0
+                new_points.append(points[i])
+    return new_points
+            
+
 def transform(point, old_dim, new_dim = SCALE_SIZE):
     old_dim = np.array(old_dim)
     new_dim = np.array(new_dim)
@@ -47,7 +61,7 @@ def set_points():
         points = data['points']
         size = data['size'] ## [width, height]
         print(size, points) 
-        newPoints = [transform(pt, size[0]) for pt in points]
+        newPoints = interpolate_points([transform(pt, size[0]) for pt in points])
         print(newPoints)
         thread = threading.Thread(target=draw_async, args=(newPoints,))
         thread.start()
