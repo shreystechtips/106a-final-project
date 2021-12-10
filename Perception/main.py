@@ -1,18 +1,11 @@
-print("hi")
 import cv2 as cv
-print("hi")
 import numpy as np
-print("hi")
 from ball_detector import get_ball_location
-print("hi")
 from transform_receiver import get_camera_transform
-print("hi")
 from transformation_handler import invert_homogeneous_matrix
-print("hi")
 default_webcam = True
 if not default_webcam:
     import pyrealsense2.pyrealsense2 as rs
-print("hi")
 from server import app, curr_frame
 
 # class CustomServer(Server):
@@ -29,7 +22,6 @@ if __name__ == '__main__':
     if default_webcam:
         cap = cv.VideoCapture('/home/shrey/106a-final-project/TestData/video-1638937380.mp4')
         # cap = cv.VideoCapture(0)
-        print("hi32")
         while(1):
             ret, frame = cap.read()
             # get_ball_location(frame)
@@ -52,7 +44,7 @@ if __name__ == '__main__':
         device = pipeline_profile.get_device()
         device_product_line = str(device.get_info(rs.camera_info.product_line))
         config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-        config.enable_stream(rs.stream.bgr8, 640, 480, rs.format.bgr8, 30)
+        config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 
         pipeline.start(config)
         while True:
