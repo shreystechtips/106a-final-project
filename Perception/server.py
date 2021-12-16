@@ -207,4 +207,5 @@ def udp_conn():
 
 
 if __name__=="__main__":
-    app.run(host='0.0.0.0')
+    if not (len(sys.argv) > 1 and sys.argv[1] == "--naive"):
+        app.run(host='0.0.0.0')
