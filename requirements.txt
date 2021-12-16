@@ -4,4 +4,4 @@ pyyaml
 pyserial
 flask
 flask_cors
-yaml
+mediapipe
