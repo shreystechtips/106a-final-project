@@ -9,6 +9,6 @@ def get_index_finger_position(frame):
     results = hands.process(frameRGB)
     if results.multi_hand_landmarks:
         for handlms in results.multi_hand_landmarks:
-            lm = handlms[8]
+            lm = handlms.landmark[8]
             h, w, _ = frame.shape
             return (int(lm.x * w), int(lm.y * h))
