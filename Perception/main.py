@@ -1,12 +1,12 @@
 import cv2 as cv
 import numpy as np
-from ball_detector import get_ball_location
 from transform_receiver import get_camera_transform
-from transformation_handler import invert_homogeneous_matrix
+from transformation_handler import get_pixel_location_camera_frame
 default_webcam = True
 if not default_webcam:
     import pyrealsense2.pyrealsense2 as rs
-from server import app, curr_frame
+# from server import app, curr_frame
+from finger_tracker import get_index_finger_position
 
 # class CustomServer(Server):
 #     def __call__(self, app, *args, **kwargs):
@@ -26,6 +26,9 @@ if __name__ == '__main__':
             ret, frame = cap.read()
             # get_ball_location(frame)
             if ret:
+                output = get_index_finger_position(frame)
+                if output is not None:
+                    cv.circle(frame, (output[0], output[1]), 15, (139, 0, 0), cv.FILLED)
                 cv.imshow('frame',frame)
                 curr_frame = frame
                 cv.imwrite("frame.jpg", frame)
@@ -51,15 +54,21 @@ if __name__ == '__main__':
             frames = pipeline.wait_for_frames()
             depth_frame = frames.get_depth_frame()
             color_frame = frames.get_color_frame()
-
+            depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
+            
             # Convert images to numpy arrays
             depth_image = np.asanyarray(depth_frame.get_data())
             color_image = np.asanyarray(color_frame.get_data())
 
+            output = get_index_finger_position(color_image)
+            if output is not None:
+                finger_x, finger_y = output[0], output[1]
+                depth = depth_frame.get_distance(finger_x, finger_y)
+                cv.circle(color_image, (output[0], output[1]), 15, (139, 0, 0), cv.FILLED)
+                print(get_pixel_location_camera_frame(output[0], output[1], depth_frame, depth_intrin))
             cv.imshow('frame',color_image)
             curr_frame = color_image
             transform = get_camera_transform(color_image)
-
             k = cv.waitKey(1) & 0xFF
             if k == 27:
                 break

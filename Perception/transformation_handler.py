@@ -33,3 +33,9 @@ def draw_static_transform(frame, camera_intrinsic_matrix, dist_coeffs, marker_to
     print(rvec.T)
     print(workspace_to_camera_transformation[0:3, 3:])
     cv.aruco.drawAxis(frame, camera_intrinsic_matrix, dist_coeffs, rvec, workspace_to_camera_transformation[0:3, 3:], 0.1)
+
+def get_pixel_location_camera_frame(x: int, y: int, depth, depth_intrinsics):
+    depth_value = depth.get_distance(x, y)
+    depth_point = rs.rs2_deproject_pixel_to_point(
+            depth_intrinsics, [x, y], depth_value)
+    return depth_point
