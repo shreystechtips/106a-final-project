@@ -55,13 +55,14 @@ def draw_async(points, control = control):
     drawing = False
     print("end draw")
 
-def draw_points(points, size):
+def draw_points(points, size, interpolate = True):
     global drawing
     if not drawing:
         drawing = True
-        newPoints = interpolate_points([transform(pt, size[0]) for pt in points])
-        print(newPoints)
-        thread = threading.Thread(target=draw_async, args=(newPoints,))
+        if interpolate:
+            points = interpolate_points([transform(pt, size[0]) for pt in points])
+            print(points)
+        thread = threading.Thread(target=draw_async, args=(points,))
         thread.start()
 
 @app.route(f'/api/draw_preset', methods=['POST'])
