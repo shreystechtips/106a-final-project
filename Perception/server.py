@@ -75,7 +75,7 @@ def draw_async(points, control = control):
     print(control.is_done())
     while not control.is_done():
         control.update_manager()
-        time.sleep(0.1)
+        time.sleep(0.005)
     drawing = False
     print("end draw")
 
@@ -154,7 +154,7 @@ def get_status():
     except Exception as e:
         print(e)
         pass
-    return {"percent": proportion_done*100}, 200
+    return {"percent": str(round(proportion_done*100, 2))}, 200
 
 @app.route('/api/video_feed')
 def video_feed():
