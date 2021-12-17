@@ -25,9 +25,9 @@ class FingerTracker(Controller):
         self.set_tracking()
     
     def check_for_new_point(self):
-        if self.finger_pos[2] < 0.15:
+        if self.finger_pos[2] < 0.1 and self.finger_pos[2] > 0:
             gcode_coords = get_gcode_coords(self.finger_pos)
-            if np.linalg.norm(self.prev_finger_pos - np.array(gcode_coords)) > 50:
+            if np.linalg.norm(self.prev_finger_pos - np.array(gcode_coords)) > 100 and not (gcode_coords[0] == 0 and gcode_coords[1] == 0) and not (gcode_coords[0] == 300 and gcode_coords[1] == 300):
                 self.add_target_point(gcode_coords)
                 self.prev_finger_pos = np.array(gcode_coords)
 
