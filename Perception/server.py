@@ -14,24 +14,48 @@ import threading
 import sys
 from Controls.controller_manager import ControllerManager
 import Controls.presets as presets
+import numpy as np
 
 curr_frame = np.zeros((480,640,3))
 
 SCALE_SIZE = 300
 control = ControllerManager()
 #control = None
-def interpolate_points(points, DIST_THRES = 5):
+
+def calculate_lstsq_error(points):
+    x = points[:,0]
+    y = points[:,1]
+    A = np.vstack([x, np.ones(len(x))]).T
+    return np.linalg.lstsq(A, y, rcond=None)[1]
+
+def interpolate_points(points, DIST_THRES = 5, LSTSQ_THRES = 1):
     curr_dist = 0
     new_points = []
+
+    line_start = 0
+    line_end = 1
+    try_lstsq = True
+
     for i in range(0,len(points)):
         if i ==0:
             new_points.append(points[i])
         else:
             curr_dist += np.linalg.norm(points[i] - points[i-1])
-            if curr_dist > DIST_THRES:
+            # if try_lstsq:
+            error = calculate_lstsq_error(points[line_start:line_end])
+            if i == len(points) or (abs(error) > LSTSQ_THRES and curr_dist > DIST_THRES):
+                new_points.append(points[line_end])
                 curr_dist = 0
-                new_points.append(points[i])
-    return new_points
+                line_start = line_end
+
+            line_end = min(line_end + 1, len(points)-1) # incr last index by 1
+
+            # if curr_dist > DIST_THRES and not try_lstsq:
+            #     curr_dist = 0
+            #     new_points.append(points[i])
+            #     line_start = i ## reset start point
+
+    return np.array(new_points)
             
 
 def transform(point, old_dim, new_dim = SCALE_SIZE):
