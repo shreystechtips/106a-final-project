@@ -39,22 +39,31 @@ def interpolate_points(points, DIST_THRES = 5, LSTSQ_THRES = 1, errors = []):
         else:
             error = calculate_lstsq_error(points[line_start:line_end])
             errors.append(error)
-            if i == len(points) or abs(error) >= LSTSQ_THRES:
+            if abs(error) >= LSTSQ_THRES:
                 new_points.append(points[line_end])
                 line_start = line_end
 
             line_end = min(line_end + 1, len(points)-1) # incr last index by 1
-
+        if i == len(points) - 1: # add last point to finish line
+            new_points.append(points[i])
     return np.array(new_points)
             
 
 def transform(point, old_dim, new_dim = SCALE_SIZE):
-    scale = new_dim/old_dim
+    min_value = min(np.min(point[:,1]), np.min(point[:,0])) 
+    scale = new_dim/old_dim if min_value >= 0 else (new_dim/2)/(old_dim)
     old_dim = np.array(old_dim)
     new_dim = np.array(new_dim)
     point = np.array(point) 
     temp =  scale*(point - old_dim/2) + new_dim/2
-    temp[0] = -temp[0] + new_dim
+    temp[:,0] = -temp[:,0] + new_dim
+    
+    min_value = min(np.min(temp[:,1]), np.min(temp[:,0]))
+    if min_value < 0:
+        # shift values
+        temp -= min_value 
+        
+    
     return temp
 
 
