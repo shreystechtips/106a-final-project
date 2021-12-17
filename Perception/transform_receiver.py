@@ -20,6 +20,9 @@ camera_matrix, dist_coeffs = get_camera_matrices()
 camera_matrix = np.array(camera_matrix)
 dist_coeffs = np.array(dist_coeffs)
 
+def set_intrinsics(matrix):
+    camera_matrix = matrix
+
 def get_camera_transform(frame, debug=True):
     ''' Returns an np.ndarray of size (4, 4) as a homogeneous transformation matrix from marker frame to camera frame
         Input: frame - the frame containing the ArUco Marker
@@ -31,13 +34,11 @@ def get_camera_transform(frame, debug=True):
         rotation_matrix, _ = cv.Rodrigues(rvecs[0])
         translation_vector = tvecs[0].T
         if debug:
-            new_frame = frame.copy()
-            cv.aruco.drawDetectedMarkers(new_frame, corners, ids=ids)
-            cv.aruco.drawAxis(new_frame, camera_matrix, dist_coeffs, rvecs[0], tvecs[0], 0.1)
+            cv.aruco.drawDetectedMarkers(frame, corners, ids=ids)
+            cv.aruco.drawAxis(frame, camera_matrix, dist_coeffs, rvecs[0], tvecs[0], 0.1)
             marker_to_camera = np.block([[rotation_matrix, translation_vector],
                                          [np.zeros((1, 3)), 1]])
-            transformation_handler.draw_static_transform(new_frame, camera_matrix, dist_coeffs, marker_to_camera)
-            cv.imshow("ArUco Marker", new_frame)            
+            transformation_handler.draw_static_transform(frame, camera_matrix, dist_coeffs, marker_to_camera)
         return np.block([[rotation_matrix, translation_vector],
                         [np.zeros((1, 3)), 1]])
     return None
