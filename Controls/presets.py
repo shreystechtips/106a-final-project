@@ -5,7 +5,7 @@ def swirl_preset(rate_theta = 15/180*np.pi, rate_r = 3, steps = 50, offset = 0):
     rads = np.linspace(0, steps*rate_r, num=steps)
     x = (rads*np.cos(thetas) + offset).astype(int)
     y = (rads*np.sin(thetas) + offset).astype(int)
-    size = max(np.max(x), np.max(y)) - min(np.min(x), np.min(y))
+    size = 2*max(np.max(np.abs(x)), np.max(np.abs(y)))
     return list(zip(x,y)), (size,size)
 
 def cardiod_preset(a = 20, steps = 50, offset = 0):
@@ -16,7 +16,7 @@ def cardiod_preset(a = 20, steps = 50, offset = 0):
     off = min(np.min(x), np.min(y))
     x -= off
     y -= off
-    size = max(np.max(x), np.max(y)) - min(np.min(x), np.min(y))
+    size = 2*max(np.max(np.abs(x)), np.max(np.abs(y)))
     import matplotlib.pyplot as plt
     plt.plot(x,y)
     plt.show()
