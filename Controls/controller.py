@@ -35,7 +35,7 @@ class Controller(ABC):
 
     def update(self):
         if self.state == Controller.states['IDLE']:
-            sleep(0.05)
+            self.update_idle()
         elif self.state == Controller.states['HOMING']:
             if not self.started_homing:
                 self.started_homing = True
@@ -46,6 +46,9 @@ class Controller(ABC):
             self.update_tracking()
         elif self.state == Controller.states['BACKTRACKING']:
             self.update_backtracking()
+
+    def update_idle(self):
+        sleep(0.05)
 
     @abstractmethod
     def update_tracking(self):

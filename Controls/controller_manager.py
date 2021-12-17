@@ -2,6 +2,7 @@ from Controls.controller import Controller
 import serial
 from time import sleep
 from Controls.point_tracker_controller import PointTracker
+from Controls.finger_tracker_controller import FingerTracker
 
 class ControllerManager:
 
@@ -37,6 +38,12 @@ class ControllerManager:
 
     def update_manager(self):
         self.controller.update()
+
+    def run_finger_tracker(self):
+        self.controller = FingerTracker(self.ser)
+
+    def get_controller(self):
+        return self.controller
 
     def draw_points(self, points):
         self.controller.load_new_points(points)
