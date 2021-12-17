@@ -13,8 +13,8 @@ def invert_homogeneous_matrix(matrix: np.ndarray):
     return np.linalg.inv(matrix)
 
 workspace_to_marker_transformation = np.array([[0.0, -1.0, 0.0, 0.18],
-                                               [1.0, 0.0, 0.0, -0.26],
-                                               [0.0, 0.0, 1.0, -0.1],
+                                               [1.0, 0.0, 0.0, -0.267],
+                                               [0.0, 0.0, 1.0, 0.1],
                                                [0.0, 0.0, 0.0, 1.0]])
 
 marker_to_workspace_transformation = invert_homogeneous_matrix(workspace_to_marker_transformation)
@@ -49,10 +49,10 @@ def get_gcode_coords(workspace_coords):
     tentative_coords = [workspace_coords[0] * 1000, workspace_coords[1] * 1000]
     if tentative_coords[0] < 0:
         tentative_coords[0] = 0
-    elif tentative_coords[0] > 300:
-        tentative_coords[0] = 300
+    elif tentative_coords[0] > 290:
+        tentative_coords[0] = 290
     if tentative_coords[1] < 0:
         tentative_coords[1] = 0
-    elif tentative_coords[1] > 300:
-        tentative_coords[1] = 300
+    elif tentative_coords[1] > 290:
+        tentative_coords[1] = 290
     return [int(tentative_coords[0]), int(tentative_coords[1])]
