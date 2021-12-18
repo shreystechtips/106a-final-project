@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 import cv2
 import numpy as np
-from numpy.core.numeric import convolve
 app = Flask(__name__)
 cors = CORS(app)
 drawing = False
